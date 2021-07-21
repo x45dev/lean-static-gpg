@@ -35,17 +35,8 @@ jobs:
         run: cd $GITHUB_WORKSPACE && chmod +x build.sh && ./build.sh
       - name: Create tarball
         run: cd $GITHUB_WORKSPACE && tar -cjvf static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2 gnupg
-      - name: Tag
-        if: startsWith(github.ref, 'refs/heads/release/')
-        run: |
-          git tag "v$env:GitVersion_SemVer"
-          git push origin "v$env:GitVersion_SemVer"
-      - name: Release
-        if: startsWith(github.ref, 'refs/heads/release/')
-        uses: softprops/action-gh-release@v0.1.5
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.4
         with:
-          name: v${{ env.GitVersion_SemVer }}
-          prerelease: ${{ env.GitVersion_PreReleaseLabel != '' }}
-          files: $GITHUB_WORKSPACE/static-gpg-*.tar.bz2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: static-gpg.tar.bz2
+          path: $GITHUB_WORKSPACE/static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2
