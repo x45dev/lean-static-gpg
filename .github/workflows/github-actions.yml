@@ -1,0 +1,45 @@
+# Build static-gpg and publish release tarball
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Get GitHub Actions context
+      - name: Dump env
+        run: env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Compile static-gpg
+        run: cd $GITHUB_WORKSPACE && chmod +x build.sh && ./build.sh
+      
+      - name: Create tarball
+        run: cd $GITHUB_WORKSPACE && tar -cjvf static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2
+      
+      - name: GH Release
+        # You may pin to the exact commit or the version.
+        uses: softprops/action-gh-release@v0.1.5
+        with:
+          # Newline-delimited list of path globs for asset files to upload
+          files: $GITHUB_WORKSPACE/static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2
