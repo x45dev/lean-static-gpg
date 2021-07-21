@@ -42,7 +42,7 @@ jobs:
           git push origin "v$env:GitVersion_SemVer"
       - name: Release
         if: startsWith(github.ref, 'refs/heads/release/')
-        uses: softprops/action-gh-release@0.1.5
+        uses: softprops/action-gh-release@v0.1.5
         with:
           name: v${{ env.GitVersion_SemVer }}
           prerelease: ${{ env.GitVersion_PreReleaseLabel != '' }}
