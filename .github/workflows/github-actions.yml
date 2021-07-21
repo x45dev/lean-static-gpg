@@ -39,4 +39,4 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: static-gpg.tar.bz2
-          path: $GITHUB_WORKSPACE/static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2
+          path: ${{ github.workspace }}/static-gpg-*.tar.bz2
