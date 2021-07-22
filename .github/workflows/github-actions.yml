@@ -34,9 +34,9 @@ jobs:
       - name: Compile static-gpg
         run: cd $GITHUB_WORKSPACE && chmod +x build.sh && ./build.sh -p /opt/gnupg
       - name: Create tarball
-        run: cd $GITHUB_WORKSPACE && tar -cjvf static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2 gnupg
+        run: cd /opt/ && tar -cjvf static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2 gnupg
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
           name: static-gpg.tar.bz2
-          path: ${{ github.workspace }}/static-gpg-*.tar.bz2
+          path: /opt/static-gpg-*.tar.bz2
