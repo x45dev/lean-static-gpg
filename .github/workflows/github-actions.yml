@@ -32,7 +32,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Compile static-gpg
-        run: cd $GITHUB_WORKSPACE && chmod +x build.sh && ./build.sh
+        run: cd $GITHUB_WORKSPACE && chmod +x build.sh && ./build.sh -p /opt/gnupg
       - name: Create tarball
         run: cd $GITHUB_WORKSPACE && tar -cjvf static-gpg-`date +%Y%M%d`-$GITHUB_RUN_NUMBER.tar.bz2 gnupg
       - name: Upload a Build Artifact
